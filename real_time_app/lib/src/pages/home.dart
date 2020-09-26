@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:real_time_app/src/models/band.dart';
@@ -30,23 +33,94 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: (){},
+        onPressed: addNewBand,
         elevation: 1,
       ),
     );
   }
 
-  ListTile _bandTile(Band band) {
-    return ListTile(
-        leading: CircleAvatar(
-          child: Text(band.name.substring(0,2)),
-          backgroundColor: Colors.blue[100],
-        ),
-        title: Text(band.name),
-        trailing: Text("${band.votes}", style: TextStyle(fontSize: 20),),
-        onTap: (){
+  Widget _bandTile(Band band) {
+    return Dismissible(
+          key: Key(band.id),
+          background: Container(
+            padding: EdgeInsets.only(left: 8.0),
+            color: Colors.red,
+            child: Align(
+              child: Text("Delete"),
+              alignment: Alignment.centerLeft,
+              ),
+          ),
+          direction: DismissDirection.startToEnd,
+          child: ListTile(
+          leading: CircleAvatar(
+            child: Text(band.name.substring(0,2)),
+            backgroundColor: Colors.blue[100],
+          ),
+          title: Text(band.name),
+          trailing: Text("${band.votes}", style: TextStyle(fontSize: 20),),
+          onTap: (){
 
-        },
-      );
+          },      
+        ),
+    );
+  }
+
+
+  addNewBand(){
+    final textcontroller =  new TextEditingController();
+    if (Platform.isAndroid){     
+      return showDialog(context: context,
+      builder: (context){
+        return AlertDialog(
+          title: Text("new band name:"),
+          content: TextField(
+            controller: textcontroller,
+          ),
+          actions: [
+            MaterialButton(
+              child: Text("add"),
+              textColor: Colors.blue,
+              elevation: 5,
+              onPressed: ()=> addBandToList(textcontroller.text)
+              ,
+            )
+          ],
+        );
+      },
+    );
+    }
+
+    showCupertinoDialog(
+      context: context,
+      builder: (_){
+        return CupertinoAlertDialog(
+          title: Text("new band name:"),
+          content: CupertinoTextField(
+            controller: textcontroller,
+          ),
+          actions: [
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: Text("add"),
+              onPressed: ()=>addBandToList(textcontroller.text),
+            ),
+            CupertinoDialogAction(
+              isDestructiveAction: true,
+              child: Text("close"),
+              onPressed: ()=>Navigator.pop(context),
+            ),
+          ],
+        );
+      }
+    );
+    
+  }
+
+  void addBandToList(String name){
+    if (name.length>0){
+        this.bands.add(new Band(id:DateTime.now().toString(), name:name, votes: 0));
+        setState(() {      });
+    }
+        Navigator.pop(context);
   }
 }
