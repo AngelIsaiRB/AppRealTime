@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:real_time_app/src/models/band.dart';
+import 'package:real_time_app/src/services/socket_service.dart';
 class HomePage extends StatefulWidget {
   
 
@@ -20,12 +22,23 @@ class _HomePageState extends State<HomePage> {
     new Band(id:"4",name:"Of mosters and men",votes:7),
     
   ];
+  
   @override
   Widget build(BuildContext context) {
+    final socketService =Provider.of<SocketService>(context);
     return Scaffold(
       appBar: AppBar(
           title: Text("Band names", style: TextStyle(color: Colors.black),),
           backgroundColor: Colors.white,
+          elevation: 1,
+          actions: [
+            Container(
+              margin: EdgeInsets.only(right: 10),
+              child: (socketService.serverStatus==ServerStatus.Online)?
+              Icon(Icons.check_circle, color:Colors.blue[300] ,)
+              :Icon(Icons.offline_bolt, color:Colors.red[300] ,),
+            )
+          ],
       ),
       body: ListView.builder(
         itemCount: bands.length,

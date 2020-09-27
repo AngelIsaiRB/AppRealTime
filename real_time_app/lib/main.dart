@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:real_time_app/src/pages/home.dart';
+import 'package:real_time_app/src/pages/status.dart';
+import 'package:real_time_app/src/services/socket_service.dart';
  
 void main() => runApp(MyApp());
  
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Real Time App',
-      initialRoute: "home",
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Material App Bar'),
-        ),
-        body: Center(
-          child: Container(
-            child: Text('Hello World'),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_)=>SocketService(),)
+        ],
+        child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Real Time App',
+        initialRoute: "home",
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text('Material App Bar'),
           ),
-        ),        
+          body: Center(
+            child: Container(
+              child: Text('Hello World'),
+            ),
+          ),        
+        ),
+        routes: {
+          "home":(BuildContext context) => HomePage(),
+          "Status":(_)=>StatusPage(),
+        },
       ),
-      routes: {
-        "home":(BuildContext context) => HomePage(),
-
-      },
     );
   }
 }
