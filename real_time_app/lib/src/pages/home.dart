@@ -36,7 +36,8 @@ class _HomePageState extends State<HomePage> {
               margin: EdgeInsets.only(right: 10),
               child: (socketService.serverStatus==ServerStatus.Online)?
               Icon(Icons.check_circle, color:Colors.blue[300] ,)
-              :Icon(Icons.offline_bolt, color:Colors.red[300] ,),
+
+              :Icon(Icons.cloud_off, color:Colors.red[300] ,),
             )
           ],
       ),

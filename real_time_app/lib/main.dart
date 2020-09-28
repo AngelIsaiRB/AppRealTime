@@ -18,15 +18,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Real Time App',
         initialRoute: "home",
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text('Material App Bar'),
-          ),
-          body: Center(
-            child: Container(
-              child: Text('Hello World'),
-            ),
-          ),        
+        home: Scaffold(                       
         ),
         routes: {
           "home":(BuildContext context) => HomePage(),
