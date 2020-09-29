@@ -59,11 +59,13 @@ class _HomePageState extends State<HomePage> {
         children: [
           _showGraph(),
           Expanded(
-              child: ListView.builder(
-              itemCount: bands.length,
-              itemBuilder: (BuildContext context, int index) =>_bandTile(bands[index]),
-            ),
-          )
+            
+            child: ListView.builder(
+                itemCount: bands.length,
+                itemBuilder: (BuildContext context, int index) =>_bandTile(bands[index]),
+              ),
+          ),
+         
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -162,7 +164,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _showGraph() {
-    Map<String, double> dataMap = new Map();
+   if(bands.length>1){
+      Map<String, double> dataMap = new Map();
     bands.forEach((element) { 
       dataMap.putIfAbsent(element.name, () => element.votes.toDouble());
     });
@@ -170,6 +173,8 @@ class _HomePageState extends State<HomePage> {
     width: double.infinity,
     height: 200,
     child: PieChart(dataMap: dataMap));
+   }
+   else return Container();
 
   }
 }
